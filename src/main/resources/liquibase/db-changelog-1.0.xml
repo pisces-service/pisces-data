@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+	<changeSet author="nonoy.jordan" id="1.0">
+        <createTable tableName="company">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_company"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="account">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_account"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user"/>
+            </column>
+            <column name="account_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_user_account" references="account(id)"/>
+            </column>
+            <column name="company_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_user_company" references="company(id)"/>
+            </column>
+            <column name="firstname" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="login">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_login"/>
+            </column>
+            <column name="user_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_login_user" references="user(id)"/>
+            </column>
+            <column name="username" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_expiration" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reset_code" type="varchar(6)"/>
+        </createTable>
+
+        <createTable tableName="contact_type">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_contact_type"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(60)"/>
+        </createTable>
+
+        <createTable tableName="role">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_role"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(60)"/>
+        </createTable>
+
+        <createTable tableName="admin">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_admin"/>
+            </column>
+            <column name="user_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_admin_user" references="user(id)"/>
+            </column>
+            <column name="role_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_admin_role" references="role(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="decision_type">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_decision_type"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(60)"/>
+        </createTable>
+
+        <createTable tableName="contact">
+            <column name="ID" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_contact"/>
+            </column>
+            <column name="related_user_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_contact_related_user" references="user(id)"/>
+            </column>
+            <column name="relating_user_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_contact_relating_user" references="user(id)"/>
+            </column>
+            <column name="contact_type_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_contact_contact_type" references="contact_type(id)"/>
+            </column>
+            <column name="note" type="varchar(60)"/>
+        </createTable>
+
+        <createTable tableName="room_type">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_room_type"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(60)"/>
+            <column name="min_num_guest" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_num_guest" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_url" type="varchar(60)"/>
+        </createTable>
+
+        <createTable tableName="seat_position">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_seat_position"/>
+            </column>
+            <column name="room_type_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_seat_position_room_type" references="room_type(id)"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(60)"/>
+        </createTable>
+
+        <createTable tableName="meeting">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_meeting"/>
+            </column>
+            <column name="room_type_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_meeting_room_type" references="room_type(id)"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(60)"/>
+        </createTable>
+
+        <createTable tableName="guest">
+            <column name="id" type="varchar(60)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_guest"/>
+            </column>
+            <column name="user_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_guest_user" references="user(id)"/>
+            </column>
+            <column name="meeting_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_guest_meeting" references="meeting(id)"/>
+            </column>
+            <column name="seat_position_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_guest_seat_position" references="seat_position(id)"/>
+            </column>
+            <column name="decision_type_id" type="varchar(60)">
+                <constraints nullable="false" foreignKeyName="fk_guest_decision_type" references="decision_type(id)"/>
+            </column>
+            <column name="is_admin" type="bit(1)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
